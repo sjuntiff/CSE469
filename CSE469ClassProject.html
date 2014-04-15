@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="viewport" content="width = device-width">
+		<meta name="viewport" content="initial-scale = 1.0, user-scalable = no">
+		<title>CSE 469 Computer and Network Forensics Class Project</title>
+		<link href="/rsc/Styles.css" rel="stylesheet" type="text/css" />
+	</head>
+	
+	<body>
+	
+		<div class="Banner">
+		
+		</div>
+	
+		<div class="AddressConversionTool">
+		Address Conversion Tool
+		<br>
+			-L | -P | -C	[-B [-s bytes]] [-l address] [-p address] [-c address -k sectors -r sectors -t tables -f sectors] 
+			<br>
+		</div>
+		
+		<div class="MacConversionTool">
+		Mac Conversion Tool
+		<br>
+		-T | -D [-f filename | -h hex value]
+		<br>
+		</div>
+		
+		<div class="RawImageTool">
+			Raw Image Tool
+			<br>
+			<div class="ButtonField">
+				<form action="FileUploader.php" method="post"
+				enctype="multipart/form-data">
+				<label for="file">Filename:</label>
+				<input type="file" name="file" id="file"><br>
+				<input type="submit" name="submit" value="Submit">
+				</form>
+			</div>
+		</div>
+			<div class="OutputField">
+			</div>
+			
+		</div>
+		
+	
+	</body>
+	
+</html>
