@@ -16,21 +16,233 @@
 		</div>
 	
 		<div class="AddressConversionTool">
-		Address Conversion Tool
+		Please enter a command in the following format.
 		<br>
-			-L | -P | -C	[-B [-s bytes]] [-l address] [-p address] [-c address -k sectors -r sectors -t tables -f sectors] 
-			<br>
+			-L | -P | -C [-B [-s bytes]] [-l address] [-p address] [-c address -k sectors -r sectors -t tables -f sectors] 
+		<br>
+			<form>
+				Address Conversion Tool: <input type="text" name="addressConversion">
+				<input type="button" onclick="addressConvert()" value="Submit" id="addressConversion">
+			</form>
+			<script type="text/javascript">
+				function addressConvert() {
+				var AddressConversionText = document.getElementById('addressConversion').value;
+				var AddressCommand = new Array();
+				var curToken = "";
+				var numCommands = -1;
+				for(var i=0;i<AddressConversionText.length;i++)
+				{
+					if(AddressConversionText[i] != (' ' || '='))
+					{
+						curToken += AddressConversionText[i];
+					}
+					else if(i = AddressConversionText.length-1)
+					{
+						curToken += AddressConversionText[i];
+						numCommands++;
+						AddressCommand[numCommands] = curToken;
+					}
+					else
+					{
+						numCommands++;
+						AddressCommand[numCommands] = curToken;
+					}
+				}
+				
+				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=0, byteAddress=0, 
+					sectorSize=0,	logicalKnown=0, physicalKnown=0, clusterKnown=0, clusterSize=0, reserved=0,
+					fatTables=0, fatLength =0;
+				for(var i=0; i<numCommands; i++)
+				{
+					if(AddressCommand[i] == ("-L" || "--logical"))
+					{
+						Logical = true;
+					}
+					else if(AddressCommand[i] == ("-P" || "--physical"))
+					{
+						Physical = true;
+					}
+					else if(AddressCommand[i] == ("-L" || "--cluster"))
+					{
+						Cluster = true;
+					}
+					else if(AddressCommand[i] == ("-b" || "--partition-start"))
+					{
+						partitionStart=AddressCommand[i+1];
+						i++;
+					}
+					else if(AddressCommand[i] == ("-B" || "--byte-address"))
+					{
+						ByteAddress = true;
+					}
+					else if(AddressCommand[i] == ("-s" || "--sector-size"))
+					{
+						sectorSize=AddressCommand[i+1];
+						i++;
+					}
+					else if(AddressCommand[i] == ("-l" || "--logical-known"))
+					{
+						logicalKnown=AddressCommand[i+1];
+						i++;
+					}
+					else if(AddressCommand[i] == ("-p" || "--physical-known"))
+					{
+						physicalKnown=AddressCommand[i+1];
+						i++;
+					}
+					else if(AddressCommand[i] == ("-c" || "--cluster-known"))
+					{
+						clusterKnwon=AddressCommand[i+1]
+						i++;
+						clusterSize=AddressCommand[i+1];
+						i++;
+						reserved=AddressCommand[i+1];
+						i++;
+						fatTables=AddressCommand[i+1]; 
+						i++;
+						fatLength =AddressCommand[i+1];
+						i++;
+					}
+					else 
+					{
+						//do nothing
+					}
+				}
+				
+				if(Logical == true)
+				{
+					//logic to handle logical address
+				}
+				if(Physical == true)
+				{
+					//logic to handle physical address
+				}
+				if(Cluster == true)
+				{
+					//logic to handle cluster address
+				}
+			}
+			</script>
 		</div>
 		
 		<div class="MacConversionTool">
-		Mac Conversion Tool
+		Please enter a command in the following format.
 		<br>
 		-T | -D [-f filename | -h hex value]
+		<form>
+				Mac Conversion Tool: <input type="text" name="macConversion" id="macConversion">
+				<input type="button" onclick="macConvert()" value="Submit">
+		</form>
 		<br>
+		<script type="text/javascript">
+				function macConvert()
+				{
+				
+				var MacConversionText = document.getElementById('macConversion').value;
+				var macCommand = new Array();
+				var curToken = "";
+				var numCommands = -1;
+				for(var i=0;i<macConversionText.length;i++)
+				{
+					if(macConversionText[i] != ' ')
+					{
+						curToken += macConversionText[i];
+					}
+					else if(i = macConversionText.length-1)
+					{
+						curToken += macConversionText[i];
+						numCommands++;
+						macCommand[numCommands] = curToken;
+					}
+					else
+					{
+						numCommands++;
+						macCommand[numCommands] = curToken;
+					}
+				}
+				
+				var timeConvert=false, dateConvert=false, macFilename, macHexValue;
+				for(var i=0; i<numCommands; i++)
+				{
+					if(macCommand[i] == "-T")
+					{
+						timeConvert = true;
+					}
+					else if(macCommand[i] == "-D")
+					{
+						dateConvert = true;
+					}
+					else if(AddressCommand[i] == "-f")
+					{
+						macFilename=macCommand[i+1];
+						i++;
+					}
+					else if(AddressCommand[i] == "-h")
+					{
+						macHexValue = macCommand[i+1];
+						i++;
+					}
+					else 
+					{
+						//do nothing
+					}
+				}
+				
+				if(timeConvert == true)
+				{
+					//logic to handle time conversion
+				}
+				if(dateConvert == true)
+				{
+					//logic to handle date conversion
+				}
+			}
+		</script>
 		</div>
 		
 		<div class="RawImageTool">
 			Raw Image Tool
+			<br>
+			<form>
+			Image File: <input type="file" id="fileinput" />
+			<input type="submit" name="submit" value="Submit" action="">
+			</form>
+			
+<script type="text/javascript">
+  function readSingleFile(evt) {
+    var f = evt.target.files[0];   
+    if (f) {
+      var r = new FileReader();
+      r.onload = function(e) { 
+          var contents = e.target.result;             
+          var ct = r.result;
+          var words = ct.split(' ');            
+          alert(words[0]);
+      }
+      r.readAsText(f);
+    } else { 
+      alert("Failed to load file");
+    }
+  }
+
+  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
+</script>
+
+<input type="file" id="files" multiple />
+
+<script type="text/javascript">
+$( "#files" ).change( function( event )
+{
+    var reader = new FileReader();
+    reader.onload( e ) { \\ handle a file being loaded. contents in event.result };
+    reader.onerror( e ) { \\ handle an error during the file reading };
+
+    var files = event.target.files;
+
+    for( var i = 0; i < files.length; i++ )
+        reader.readAsText( file );
+}
+</script>
 			<br>
 			<div class="ButtonField">
 				<form action="FileUploader.php" method="post"
