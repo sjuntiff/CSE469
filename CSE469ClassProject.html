@@ -34,11 +34,11 @@
 				{
 					if(AddressConversionText[i] != (' ' || '='))
 					{
-						curToken += AddressConversionText[i];
+						curToken += AddressConversionText.charAt(i);
 					}
 					else if(i = AddressConversionText.length-1)
 					{
-						curToken += AddressConversionText[i];
+						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
 					}
@@ -51,7 +51,7 @@
 				
 				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=0, byteAddress=0, 
 					sectorSize=0,	logicalKnown=0, physicalKnown=0, clusterKnown=0, clusterSize=0, reserved=0,
-					fatTables=0, fatLength =0;
+					fatTables=0, fatLength =0, result;
 				for(var i=0; i<numCommands; i++)
 				{
 					if(AddressCommand[i] == ("-L" || "--logical"))
@@ -62,7 +62,7 @@
 					{
 						Physical = true;
 					}
-					else if(AddressCommand[i] == ("-L" || "--cluster"))
+					else if(AddressCommand[i] == ("-C" || "--cluster"))
 					{
 						Cluster = true;
 					}
@@ -121,6 +121,8 @@
 				{
 					//logic to handle cluster address
 				}
+				
+				//output conversion
 			}
 			</script>
 		</div>
@@ -146,11 +148,11 @@
 				{
 					if(macConversionText[i] != ' ')
 					{
-						curToken += macConversionText[i];
+						curToken += macConversionText.charAt(i);
 					}
 					else if(i = macConversionText.length-1)
 					{
-						curToken += macConversionText[i];
+						curToken += macConversionText.charAt(i);
 						numCommands++;
 						macCommand[numCommands] = curToken;
 					}
@@ -205,24 +207,26 @@
 			<br>
 			<form>
 			Image File: <input type="file" id="fileinput" />
-			<input type="submit" name="submit" value="Submit" action="">
+			<input type="button" name="imageTool" id="imageTool" value="Submit" onclick="readSingleFile()">
 			</form>
 			
 <script type="text/javascript">
   function readSingleFile(evt) {
-    var f = evt.target.files[0];   
-    if (f) {
-      var r = new FileReader();
-      r.onload = function(e) { 
-          var contents = e.target.result;             
-          var ct = r.result;
-          var words = ct.split(' ');            
-          alert(words[0]);
-      }
-      r.readAsText(f);
-    } else { 
-      alert("Failed to load file");
-    }
+		var f = evt.target.files[0];   
+		if (f) {
+			var r = new FileReader();
+			r.onload = function(e) { 
+				var contents = e.target.result;             
+				var ct = r.result;
+				var words = ct.split(' ');           
+				alert(words[0]);
+				
+			}
+			r.readAsText(f);
+		} 
+		else { 
+			alert("Failed to load file");
+		}
   }
 
   document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
