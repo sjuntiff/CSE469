@@ -216,7 +216,54 @@
 		if (f) {
 			var r = new FileReader();
 			r.onload = function(e) { 
-				var contents = e.target.result;             
+				var contents = e.target.result;    
+
+				for( var i = 0; i < files.length; i++ )
+				{
+					files.charAt(i);
+					
+					
+					/*
+					MBR
+					0x00 | current state of partition 00=inactive, 80=active | 1 byte
+					0x01 | beginning of partition head | 1 byte
+					0x02 | beginning of partition cylinder/sector | 1 word
+					0x04 | type of partition | 1 byte
+					0x05 | end of partition head | 1 byte
+					0x06 | end of partition cylinder sector | 1 word
+					0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
+					0x0C | number of sectors in the partition | 1 double word
+					
+					Partition Entry
+					0x000 	| executable boot code | 446 bytes 
+					0x01BE	| 1st partition entry | 16 bytes
+					0x01CE	| 2nd partition entry | 16 bytes
+					0x01DE	| 3rd partition entry | 16 bytes
+					0x01EE	| 4th partition entry | 16 bytes
+					0x01FE	|  Boot record signature (0x55 0xAA) 2 bytes
+					
+					VBR
+					0-2 assembly instruction to jump to boot code
+					3-10 OEM Name in ASCII
+					11-12 bytes per sector
+					13 sectors per cluster
+					14-15 size in sectors of the reserved area
+					16-16 number of FATs
+					17-18 maximum number of files in the root directory
+					19-20 16-bit value of number of sectors in FS (FAT32:0)
+					21-21 media type
+					22-23 16-bit size in sectors of each FAT (FAT32:0)
+					24-25 sectors per track
+					26-27 number of heads
+					28-31 number of sectors before the start of partition
+					32-35 number of sectors in file system
+					36-39 32-bit size in sectors of each FAT
+					67-70 volume serial number
+					71-81 volume name
+					82-89 file system type label
+					510-511 signature value
+					*/
+				}
 				var ct = r.result;
 				var words = ct.split(' ');           
 				alert(words[0]);
