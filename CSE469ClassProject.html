@@ -21,18 +21,18 @@
 			-L | -P | -C [-B [-s bytes]] [-l address] [-p address] [-c address -k sectors -r sectors -t tables -f sectors] 
 		<br>
 			<form>
-				Address Conversion Tool: <input type="text" name="addressConversion">
+				Address Conversion Tool: <input type="text" name="addressConversion" id="addressConversionInput">
 				<input type="button" onclick="addressConvert()" value="Submit" id="addressConversion">
 			</form>
 			<script type="text/javascript">
 				function addressConvert() {
-				var AddressConversionText = document.getElementById('addressConversion').value;
+				var AddressConversionText = document.getElementById('addressConversionInput').value;
 				var AddressCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
 				for(var i=0;i<AddressConversionText.length;i++)
 				{
-					if(AddressConversionText[i] != (' ' || '='))
+					if(AddressConversionText.charAt(i) != (' ' || '='))
 					{
 						curToken += AddressConversionText.charAt(i);
 					}
@@ -41,11 +41,13 @@
 						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
+						curToken = "";
 					}
 					else
 					{
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
+						curToken ="";
 					}
 				}
 				
