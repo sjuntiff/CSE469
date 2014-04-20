@@ -24,6 +24,11 @@
 				Address Conversion Tool: <input type="text" name="addressConversion" id="addressConversionInput">
 				<input type="button" onclick="addressConvert()" value="Submit" id="addressConversion">
 			</form>
+			
+			<form name="addressConvertOutputBox" id="addressConverOutputBox">
+				<INPUT type="text" id="addressConversionOutput" name="addressConversionOutput"> 
+			</form>
+			
 			<script type="text/javascript">
 				function addressConvert() {
 				var AddressConversionText = document.getElementById('addressConversionInput').value;
@@ -125,6 +130,10 @@
 				}
 				
 				//output conversion
+				/*
+				addressConvertOutputBox.addressConversionOutput.value="sample output";
+				
+				*/
 			}
 			</script>
 		</div>
