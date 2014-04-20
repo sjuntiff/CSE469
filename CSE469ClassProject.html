@@ -63,9 +63,9 @@
 					}
 				}
 				
-				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=0, byteAddress=0, 
-					sectorSize=0,	logicalKnown=0, physicalKnown=0, clusterKnown=0, clusterSize=0, reserved=0,
-					fatTables=0, fatLength =0, result;
+				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=-1, byteAddress=-1, 
+					sectorSize=-1,	logicalKnown=-1, physicalKnown=-1, clusterKnown=-1, clusterSize=-1, reserved=-1,
+					fatTables=-1, fatLength =-1, result;
 				for(var i=0; i<numCommands; i++)
 				{
 					if(AddressCommand[i] == ("-L" || "--logical"))
