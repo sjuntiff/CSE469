@@ -25,9 +25,7 @@
 				<input type="button" onclick="addressConvert()" value="Submit" id="addressConversion">
 			</form>
 			
-			<form name="addressConvertOutputBox" id="addressConverOutputBox">
-				<INPUT type="text" id="addressConversionOutput" name="addressConversionOutput"> 
-			</form>
+				<textarea class="FormElement" id="addressConversionOutput" name="addressConversionOutput" cols="40" rows="4"></textarea>
 			
 			<script type="text/javascript">
 				function addressConvert() {
@@ -35,23 +33,32 @@
 				var AddressCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
+				var white = new RegExp(/^\s$/);
+				alert("Length is: " + AddressConversionText.length);
+				
 				for(var i=0;i<AddressConversionText.length;i++)
 				{
-					if(AddressConversionText.charAt(i) != (' ' || '='))
+					if(!white.test(AddressConversionText.charAt(i)) || !(AddressConversionText.charAt(i) == '='))
 					{
+						alert("gets to 1st");
 						curToken += AddressConversionText.charAt(i);
+						alert(AddressConversionText.charAt(i));
 					}
-					else if(i = AddressConversionText.length-1)
+					else if(i == (AddressConversionText.length-1))
 					{
+						alert("gets to 2nd");
 						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
+						alert(AddressCommand[numCommands]);
 						curToken = "";
 					}
 					else
 					{
+						alert("gets to third");
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
+						alert(AddressCommand[numCommands]);
 						curToken ="";
 					}
 				}
@@ -130,9 +137,8 @@
 				}
 				
 				//output conversion
-				/*
-				addressConvertOutputBox.addressConversionOutput.value="sample output";
-				
+				/*alert("testing");
+				document.getElementById('addressConversionOutput').html = "\nappending sample output");
 				*/
 			}
 			</script>
