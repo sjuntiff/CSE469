@@ -34,39 +34,51 @@
 				var curToken = "";
 				var numCommands = -1;
 				var white = new RegExp(/^\s$/);
-				document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
+				//document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
 				
 				for(var i=0;i<AddressConversionText.length;i++)
 				{
-					//alert(i);
 					if(i == (AddressConversionText.length-1))
 					{
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
 						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken = "";
 					}
 					else if(!white.test(AddressConversionText.charAt(i)) || (AddressConversionText.charAt(i) == '='))
 					{
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
 						curToken += AddressConversionText.charAt(i);
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
 					}
 					else
 					{
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken ="";
 					}
 				}
 				
-				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=-1, byteAddress=-1, 
-					sectorSize=-1,	logicalKnown=-1, physicalKnown=-1, clusterKnown=-1, clusterSize=-1, reserved=-1,
-					fatTables=-1, fatLength =-1, result;
+				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=0, byteAddress=-1, 
+					sectorSize=512,	logicalKnown=-1, physicalKnown=-1, clusterKnown=-1, clusterSize=-1, reserved=-1,
+					fatTables=-1, fatLength =-1, result=0;
+					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nnumCommands = "+ numCommands;
+				
+				
+				/*
+				//Displays the AddressCommand array
+				////////////////////////
+				for(var i=0; i<numCommands+1; i++)
+				{
+					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand Array = ";
+					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + AddressCommand[i] + ", ";
+				}*/
+				
+				
 				for(var i=0; i<numCommands; i++)
 				{
 					//alert(AddressCommand[i]);
@@ -85,7 +97,9 @@
 					}
 					else if(AddressCommand[i] == ("-b" || "--partition-start"))
 					{
-						partitionStart=AddressCommand[i+1];
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = partitionStart = " + AddressCommand[i+1];
+
+						partitionStart= parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if(AddressCommand[i] == ("-B" || "--byte-address"))
@@ -94,30 +108,44 @@
 					}
 					else if(AddressCommand[i] == ("-s" || "--sector-size"))
 					{
-						sectorSize=AddressCommand[i+1];
+						sectorSize= parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if(AddressCommand[i] == ("-l" || "--logical-known"))
 					{
-						logicalKnown=AddressCommand[i+1];
+						logicalKnown= parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if(AddressCommand[i] == ("-p" || "--physical-known"))
 					{
-						physicalKnown=AddressCommand[i+1];
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = Physical Address = " + AddressCommand[i+1];
+
+						physicalKnown= parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if(AddressCommand[i] == ("-c" || "--cluster-known"))
 					{
-						clusterKnwon=AddressCommand[i+1]
+						clusterKnown= parseInt(AddressCommand[i+1]);
 						i++;
-						clusterSize=AddressCommand[i+1];
+					}
+					else if(AddressCommand[i] == ("-k" || "--cluster-size"))
+					{
+						clusterSize= parseInt(AddressCommand[i+1]);
 						i++;
-						reserved=AddressCommand[i+1];
+					}
+					else if(AddressCommand[i] == ("-r" || "--reserved"))
+					{
+						reserved= parseInt(AddressCommand[i+1]);
 						i++;
-						fatTables=AddressCommand[i+1]; 
+					}
+					else if(AddressCommand[i] == ("-t" || "--fat-tables"))
+					{
+						fatTables= parseInt(AddressCommand[i+1]); 
 						i++;
-						fatLength =AddressCommand[i+1];
+					}
+					else if(AddressCommand[i] == ("-f" || "--fat-length"))
+					{
+						fatLength = parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else 
@@ -128,22 +156,83 @@
 				
 				if(Logical == true)
 				{
-					//logic to handle logical address
+					if (logicalKnown != -1)
+					{
+						result = logicalKnown;
+					}
+					else if (physicalKnown != -1)
+					{
+						result = physicalKnown-partitionStart;
+					}
+					else if (clusterKnown != -1)
+					{
+						result = ((clusterKnown - 2) * clusterSize) + reserved + (fatTables * fatLength);
+					}
+					
+					if (ByteAddress==true)
+					{
+						result = result * sectorSize;
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nLogical Address = " + result + " bytes";//logic to handle logical address
+					}
+					else
+					{
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nLogical Address = " + result + "(sectors)";//logic to handle logical address
+					}
 				}
 				if(Physical == true)
 				{
-					//logic to handle physical address
+					if (physicalKnown != -1)
+					{
+						result = physicalKnown;
+					}
+					else if (logicalKnown != -1)
+					{
+						result = logicalKnown + partitionStart;
+					}
+					else if (clusterKnown != -1)
+					{
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\npartitionStart = " + partitionStart + "\nclusterKnown = " + clusterKnown + "\nclusterSize = " + clusterSize + "\nreserved = " + reserved + "\nfatTables = " + fatTables + "\nfatLength = " + fatLength;
+						result = partitionStart +((clusterKnown - 2) * clusterSize) + reserved + (fatTables * fatLength);
+					}
+					
+					if (ByteAddress==true)
+					{
+						result = result * sectorSize;
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nLogical Address = " + result + " bytes";//logic to handle logical address
+
+					}
+					else
+					{
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nPhysical Address = " + result + "(sectors)";//logic to handle logical address
+					}
 				}
 				if(Cluster == true)
 				{
-					//logic to handle cluster address
+					if (clusterKnown != -1)
+					{
+						result = clusterKnown;
+					}
+					else if (logicalKnown != -1)
+					{
+						result = (logicalKnown - fatTables * fatLength - reserved)/clusterSize + 2;
+					}
+					else if (physicalKnown != -1)
+					{
+						result = (physicalKnown - partitionStart - fatTables * fatLength - reserved)/clusterSize + 2;
+					}
+					
+					if (ByteAddress==true)
+					{
+						result = result * sectorSize * clusterSize;
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nCluster Address = " + result + " bytes";//logic to handle logical address
+
+					}
+					else
+					{
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nCluster Address = " + result + "(sectors)";//logic to handle logical address
+					}
 				}
-				
-				//output conversion
-				//alert("testing");
-				//document.getElementById("addressConversionOutput").value = "1st line";
-				//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nappending sample output";
-				
+								
 			}
 			</script>
 		</div>
