@@ -161,13 +161,14 @@
 				var macCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
+				var white = new RegExp(/^\s$/);
 				for(var i=0;i<macConversionText.length;i++)
 				{
-					if(macConversionText[i] != ' ')
+					if(!white.test(macConversionText.charAt(i)))
 					{
 						curToken += macConversionText.charAt(i);
 					}
-					else if(i = macConversionText.length-1)
+					else if(i == macConversionText.length-1)
 					{
 						curToken += macConversionText.charAt(i);
 						numCommands++;
