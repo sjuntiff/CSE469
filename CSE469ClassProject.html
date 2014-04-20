@@ -239,16 +239,28 @@
 		</div>
 		
 		<div class="MacConversionTool">
+		<br>
 		Please enter a command in the following format.
 		<br>
-		-T | -D [-f filename | -h hex value]
+		-T | -D [-h hex value]
 		<form>
 				Mac Conversion Tool: <input type="text" name="macConversion" id="macConversion">
-				<input type="button" onclick="macConvert()" value="Submit">
+				<input type="button" onclick="macConvertInput()" value="Submit">
 		</form>
+		<textarea class="FormElement" id="macConversionHexOutput" name="macConversionHexOutput" cols="40" rows="4"></textarea>
+		<br>
+		<br>
+		-T | -D
+		<form>
+				Mac Conversion Tool: <input type="text" name="macConversionFile" id="macConversionFile">
+				<input type="file" id="macFileInput" />
+				<input type="button" onclick="macConvertFile()" value="Submit">
+		</form>
+		<textarea class="FormElement" id="macConversionFileOutput" name="macConversionFileOutput" cols="40" rows="4"></textarea>
+		<br>
 		<br>
 		<script type="text/javascript">
-				function macConvert()
+				function macConvertInput()
 				{
 				
 				var MacConversionText = document.getElementById('macConversion').value;
