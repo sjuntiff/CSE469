@@ -34,31 +34,32 @@
 				var curToken = "";
 				var numCommands = -1;
 				var white = new RegExp(/^\s$/);
-				alert("Length is: " + AddressConversionText.length);
+				document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
 				
 				for(var i=0;i<AddressConversionText.length;i++)
 				{
-					if(!white.test(AddressConversionText.charAt(i)) || !(AddressConversionText.charAt(i) == '='))
+					//alert(i);
+					if(i == (AddressConversionText.length-1))
 					{
-						alert("gets to 1st");
-						curToken += AddressConversionText.charAt(i);
-						alert(AddressConversionText.charAt(i));
-					}
-					else if(i == (AddressConversionText.length-1))
-					{
-						alert("gets to 2nd");
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
 						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						alert(AddressCommand[numCommands]);
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken = "";
+					}
+					else if(!white.test(AddressConversionText.charAt(i)) || (AddressConversionText.charAt(i) == '='))
+					{
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
+						curToken += AddressConversionText.charAt(i);
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
 					}
 					else
 					{
-						alert("gets to third");
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						alert(AddressCommand[numCommands]);
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken ="";
 					}
 				}
@@ -68,6 +69,8 @@
 					fatTables=-1, fatLength =-1, result;
 				for(var i=0; i<numCommands; i++)
 				{
+					//alert(AddressCommand[i]);
+					
 					if(AddressCommand[i] == ("-L" || "--logical"))
 					{
 						Logical = true;
@@ -137,9 +140,10 @@
 				}
 				
 				//output conversion
-				/*alert("testing");
-				document.getElementById('addressConversionOutput').html = "\nappending sample output");
-				*/
+				//alert("testing");
+				//document.getElementById("addressConversionOutput").value = "1st line";
+				//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nappending sample output";
+				
 			}
 			</script>
 		</div>
