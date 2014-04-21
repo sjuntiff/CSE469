@@ -82,65 +82,66 @@
 
 				for(var i=0; i<numCommands; i++)
 				{
-					if(AddressCommand[i] == ("-L" || "--logical"))
+					alert(AddressCommand[i] + (AddressCommand[i] == "--physical-known"));
+					if((AddressCommand[i] == "-L") || (AddressCommand[i] == "--logical"))
 					{
 						Logical = true;
 					}
-					else if(AddressCommand[i] == ("-P" || "--physical"))
+					else if((AddressCommand[i] == "-P") || (AddressCommand[i] == "--physical"))
 					{
 						Physical = true;
 					}
-					else if(AddressCommand[i] == ("-C" || "--cluster"))
+					else if((AddressCommand[i] == "-C") || (AddressCommand[i] == "--cluster"))
 					{
 						Cluster = true;
 					}
-					else if(AddressCommand[i] == ("-b" || "--partition-start"))
+					else if((AddressCommand[i] == "-b") || (AddressCommand[i] == "--partition-start"))
 					{
 					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = partitionStart = " + AddressCommand[i+1];
 						partitionStart=AddressCommand[i+1];
 						i++;
 					}
-					else if(AddressCommand[i] == ("-B" || "--byte-address"))
+					else if((AddressCommand[i] == "-B") || (AddressCommand[i] == "--byte-address"))
 					{
 						ByteAddress = true;
 					}
-					else if(AddressCommand[i] == ("-s" || "--sector-size"))
+					else if((AddressCommand[i] == "-s") || (AddressCommand[i] == "--sector-size"))
 					{
 						sectorSize=AddressCommand[i+1];
 						i++;
 					}
-					else if(AddressCommand[i] == ("-l" || "--logical-known"))
+					else if((AddressCommand[i] == "-l") || (AddressCommand[i] == "--logical-known"))
 					{
 						logicalKnown=AddressCommand[i+1];
 						i++;
 					}
-					else if(AddressCommand[i] == ("-p" || "--physical-known"))
+					else if((AddressCommand[i] == "-p") || (AddressCommand[i] == "--physical-known"))
 					{
 					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = Physical Address = " + AddressCommand[i+1];
 						physicalKnown=AddressCommand[i+1];
 						i++;
 					}
-					else if(AddressCommand[i] == ("-c" || "--cluster-known"))
+					else if((AddressCommand[i] == "-c") || (AddressCommand[i] == "--cluster-known"))
 					{
 						clusterKnown= parseInt(AddressCommand[i+1]);
 						i++;
 					}
-					else if(AddressCommand[i] == ("-k" || "--cluster-size"))
+					else if((AddressCommand[i] == "-k") || (AddressCommand[i] == "--cluster-size"))
 					{
 						clusterSize= parseInt(AddressCommand[i+1]);
 						i++;
 					}
-					else if(AddressCommand[i] == ("-r" || "--reserved"))
+					else if((AddressCommand[i] == "-r") || (AddressCommand[i] == "--reserved"))
 					{
 						reserved= parseInt(AddressCommand[i+1]);
 						i++;
 					}
-					else if(AddressCommand[i] == ("-t" || "--fat-tables"))
+					else if((AddressCommand[i] == "-t") || (AddressCommand[i] == "--fat-tables"))
 					{
 						fatTables= parseInt(AddressCommand[i+1]); 
 						i++;
 					}
-					else if(AddressCommand[i] == ("-f" || "--fat-length"))
+					else if((AddressCommand[i] == "-f") || (AddressCommand[i] == "--fat-length"))
 					{
 						fatLength = parseInt(AddressCommand[i+1]);
 						i++;
