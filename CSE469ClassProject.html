@@ -277,6 +277,7 @@
 						curToken += MacConversionText.charAt(i);
 						numCommands++;
 						macCommand[numCommands] = curToken;
+						curToken="";
 					}
 					else if(!white.test(MacConversionText.charAt(i)))
 					{
@@ -286,6 +287,7 @@
 					{
 						numCommands++;
 						macCommand[numCommands] = curToken;
+						curToken="";
 					}
 				}
 				
