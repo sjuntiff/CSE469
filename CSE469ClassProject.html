@@ -348,7 +348,7 @@
 			function getAsText(readFile) {
         
 				var reader = new FileReader();
-  
+				
 				// Read file into memory as UTF-16      
 				reader.readAsBinaryString(readFile);
   
@@ -372,7 +372,20 @@
 			function loaded(evt) {  
 				// Obtain the read file data    
 				var fileString = evt.target.result;
-				// Handle UTF-16 file dump
+				
+				var hex = "";
+                for (var i = 0; i < fileString.length; i++) {
+                    var byteStr = fileString.charCodeAt(i).toString(16);
+                    if (byteStr.length < 2) {
+                        byteStr = "0" + byteStr;
+                    }
+                    hex += " " + byteStr;
+                }
+				
+				//filedump as hex
+                alert(hex);
+				
+				// filedump as binary
 				alert(fileString);
 			}
 
