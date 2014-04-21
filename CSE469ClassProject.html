@@ -350,7 +350,7 @@
 				var reader = new FileReader();
   
 				// Read file into memory as UTF-16      
-				reader.readAsText(readFile, "UTF-8");
+				reader.readAsBinaryString(readFile);
   
 				// Handle progress, success, and errors
 				reader.onprogress = updateProgress;
