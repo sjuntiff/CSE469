@@ -71,14 +71,14 @@
 					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nnumCommands = "+ numCommands;
 
 
-				/*
+				
 				//Displays the AddressCommand array
 				////////////////////////
 				for(var i=0; i<numCommands+1; i++)
 				{
 					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand Array = ";
 					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + AddressCommand[i] + ", ";
-				}*/
+				}
 
 				for(var i=0; i<numCommands; i++)
 				{
@@ -263,23 +263,24 @@
 		<script type="text/javascript">
 				function macConvertInput()
 				{
-
+				//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTesting Button";
 				var MacConversionText = document.getElementById('macConversion').value;
 				var macCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
 				var white = new RegExp(/^\s$/);
-				for(var i=0;i<macConversionText.length;i++)
+
+				for(var i=0;i<MacConversionText.length;i++)
 				{
-					if(!white.test(macConversionText.charAt(i)))
+					if(i == (MacConversionText.length-1))
 					{
-						curToken += macConversionText.charAt(i);
-					}
-					else if(i == macConversionText.length-1)
-					{
-						curToken += macConversionText.charAt(i);
+						curToken += MacConversionText.charAt(i);
 						numCommands++;
 						macCommand[numCommands] = curToken;
+					}
+					else if(!white.test(MacConversionText.charAt(i)))
+					{
+						curToken += MacConversionText.charAt(i);
 					}
 					else
 					{
@@ -287,8 +288,8 @@
 						macCommand[numCommands] = curToken;
 					}
 				}
-
-				var timeConvert=false, dateConvert=false, macFilename, macHexValue;
+				
+				var timeConvert=false, dateConvert=false, macHexValue;
 				for(var i=0; i<numCommands; i++)
 				{
 					if(macCommand[i] == "-T")
@@ -299,12 +300,7 @@
 					{
 						dateConvert = true;
 					}
-					else if(AddressCommand[i] == "-f")
-					{
-						macFilename=macCommand[i+1];
-						i++;
-					}
-					else if(AddressCommand[i] == "-h")
+					else if(macCommand[i] == "-h")
 					{
 						macHexValue = macCommand[i+1];
 						i++;
@@ -315,13 +311,36 @@
 					}
 				}
 
+				
+				//Displays the macCommand array
+				///////////////////////////////////
+				for(var i=0; i<numCommands+1; i++)
+				{
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nmacCommand Array = ";
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + macCommand[i] + ", ";
+				}
+				
+				var year=0, month=0, day=0;
+				
+				
 				if(timeConvert == true)
 				{
 					//logic to handle time conversion
+					
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: ";
+
 				}
 				if(dateConvert == true)
 				{
 					//logic to handle date conversion
+					
+					//year = parseInt(macHexValue.charAt(2)) * 8 + Math.floor(parseInt(macHexValue.charAt(3)/2));
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Test: " + macHexValue);
+					
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDate: ";
+					
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Year: " + year;
+					
 				}
 			}
 		</script>
