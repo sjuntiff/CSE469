@@ -330,24 +330,63 @@
 		<div class="RawImageTool">
 			Raw Image Tool
 			<br>
-			<form>
-			Image File: <input type="file" id="fileinput" />
-			<input type="button" name="imageTool" id="imageTool" value="Submit" onclick="readSingleFile()">
-			</form>
+			Image File: 
+			<input type="file" id="ImageFile" name="files[]" multiple />
+			<input type="button" onclick="ImageFile()" value="Submit">
+			<output id="list"></output>
+
+			<script type="text/javascript">
+				function ImageFile() {  
+					// obtain input element through DOM 
+  
+					var file = document.getElementById('ImageFile').files[0];
+					if(file){
+						getAsText(file);
+					}
+				}
+
+			function getAsText(readFile) {
+        
+				var reader = new FileReader();
+  
+				// Read file into memory as UTF-16      
+				reader.readAsText(readFile, "UTF-8");
+  
+				// Handle progress, success, and errors
+				reader.onprogress = updateProgress;
+				reader.onload = loaded;
+				reader.onerror = errorHandler;
+			}
+
+			function updateProgress(evt) {
+				if (evt.lengthComputable) {
+					// evt.loaded and evt.total are ProgressEvent properties
+					var loaded = (evt.loaded / evt.total);
+					if (loaded < 1) {
+						// Increase the prog bar length
+						// style.width = (loaded * 200) + "px";
+					}
+				}
+			}
+
+			function loaded(evt) {  
+				// Obtain the read file data    
+				var fileString = evt.target.result;
+				// Handle UTF-16 file dump
+				alert(fileString);
+			}
+
+			function errorHandler(evt) {
+				if(evt.target.error.name == "NotReadableError") {
+					// The file could not be read
+				}
+			}
+				
+			</script>
+			
 
 <script type="text/javascript">
   function readSingleFile(evt) {
-		var f = evt.target.files[0];   
-		if (f) {
-			var r = new FileReader();
-			r.onload = function(e) { 
-				var contents = e.target.result;    
-
-				for( var i = 0; i < files.length; i++ )
-				{
-					files.charAt(i);
-
-
 					/*
 					MBR
 					0x00 | current state of partition 00=inactive, 80=active | 1 byte
@@ -388,52 +427,18 @@
 					82-89 file system type label
 					510-511 signature value
 					*/
-				}
-				var ct = r.result;
-				var words = ct.split(' ');           
-				alert(words[0]);
 
-			}
-			r.readAsText(f);
-		} 
-		else { 
-			alert("Failed to load file");
-		}
-  }
-
-  document.getElementById('fileinput').addEventListener('change', readSingleFile, false);
 </script>
 
-<input type="file" id="files" multiple />
-
-<script type="text/javascript">
-$( "#files" ).change( function( event )
-{
-    var reader = new FileReader();
-    reader.onload( e ) { \\ handle a file being loaded. contents in event.result };
-    reader.onerror( e ) { \\ handle an error during the file reading };
-
-    var files = event.target.files;
-
-    for( var i = 0; i < files.length; i++ )
-        reader.readAsText( file );
-}
-</script>
 			<br>
 			<div class="ButtonField">
-				<form action="FileUploader.php" method="post"
-				enctype="multipart/form-data">
-				<label for="file">Filename:</label>
-				<input type="file" name="file" id="file"><br>
-				<input type="submit" name="submit" value="Submit">
-				</form>
+				
 			</div>
 		</div>
 			<div class="OutputField">
 			</div>
 
 		</div>
-
 
 	</body>
 
