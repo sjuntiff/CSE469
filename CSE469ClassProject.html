@@ -8,13 +8,13 @@
 		<title>CSE 469 Computer and Network Forensics Class Project</title>
 		<link href="/rsc/Styles.css" rel="stylesheet" type="text/css" />
 	</head>
-	
+
 	<body>
-	
+
 		<div class="Banner">
-		
+
 		</div>
-	
+
 		<div class="AddressConversionTool">
 		Please enter a command in the following format.
 		<br>
@@ -24,51 +24,53 @@
 				Address Conversion Tool: <input type="text" name="addressConversion" id="addressConversionInput">
 				<input type="button" onclick="addressConvert()" value="Submit" id="addressConversion">
 			</form>
-			
+
 				<textarea class="FormElement" id="addressConversionOutput" name="addressConversionOutput" cols="40" rows="4"></textarea>
-			
+
 			<script type="text/javascript">
 				function addressConvert() {
 				var AddressConversionText = document.getElementById('addressConversionInput').value;
 				var AddressCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
-				var white = new RegExp(/^\s$/);
-				//document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
-				
+				var isWhiteSpace = new RegExp(/^\s$/);
+				var isEqualSign = new RegExp(/^=+$/);
+				document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
+
 				for(var i=0;i<AddressConversionText.length;i++)
 				{
 					if(i == (AddressConversionText.length-1))
 					{
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
 						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken = "";
 					}
-					else if(!white.test(AddressConversionText.charAt(i)) || (AddressConversionText.charAt(i) == '='))
+					else if(!isWhiteSpace.test(AddressConversionText.charAt(i)) && !isEqualSign.test(AddressConversionText.charAt(i)))
 					{
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
 						curToken += AddressConversionText.charAt(i);
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
 					}
 					else
 					{
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
+						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken ="";
 					}
 				}
-				
+
 				var Logical=false, Physical=false, Cluster=false, ByteAddress=false, partitionStart=0, byteAddress=-1, 
 					sectorSize=512,	logicalKnown=-1, physicalKnown=-1, clusterKnown=-1, clusterSize=-1, reserved=-1,
 					fatTables=-1, fatLength =-1, result=0;
+
 					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nnumCommands = "+ numCommands;
-				
-				
+
+
 				/*
 				//Displays the AddressCommand array
 				////////////////////////
@@ -77,12 +79,9 @@
 					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand Array = ";
 					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + AddressCommand[i] + ", ";
 				}*/
-				
-				
+
 				for(var i=0; i<numCommands; i++)
 				{
-					//alert(AddressCommand[i]);
-					
 					if(AddressCommand[i] == ("-L" || "--logical"))
 					{
 						Logical = true;
@@ -97,9 +96,8 @@
 					}
 					else if(AddressCommand[i] == ("-b" || "--partition-start"))
 					{
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = partitionStart = " + AddressCommand[i+1];
-
-						partitionStart= parseInt(AddressCommand[i+1]);
+					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = partitionStart = " + AddressCommand[i+1];
+						partitionStart=AddressCommand[i+1];
 						i++;
 					}
 					else if(AddressCommand[i] == ("-B" || "--byte-address"))
@@ -108,19 +106,18 @@
 					}
 					else if(AddressCommand[i] == ("-s" || "--sector-size"))
 					{
-						sectorSize= parseInt(AddressCommand[i+1]);
+						sectorSize=AddressCommand[i+1];
 						i++;
 					}
 					else if(AddressCommand[i] == ("-l" || "--logical-known"))
 					{
-						logicalKnown= parseInt(AddressCommand[i+1]);
+						logicalKnown=AddressCommand[i+1];
 						i++;
 					}
 					else if(AddressCommand[i] == ("-p" || "--physical-known"))
 					{
-						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = Physical Address = " + AddressCommand[i+1];
-
-						physicalKnown= parseInt(AddressCommand[i+1]);
+					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = Physical Address = " + AddressCommand[i+1];
+						physicalKnown=AddressCommand[i+1];
 						i++;
 					}
 					else if(AddressCommand[i] == ("-c" || "--cluster-known"))
@@ -153,7 +150,7 @@
 						//do nothing
 					}
 				}
-				
+
 				if(Logical == true)
 				{
 					if (logicalKnown != -1)
@@ -168,7 +165,7 @@
 					{
 						result = ((clusterKnown - 2) * clusterSize) + reserved + (fatTables * fatLength);
 					}
-					
+
 					if (ByteAddress==true)
 					{
 						result = result * sectorSize;
@@ -194,7 +191,7 @@
 						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\npartitionStart = " + partitionStart + "\nclusterKnown = " + clusterKnown + "\nclusterSize = " + clusterSize + "\nreserved = " + reserved + "\nfatTables = " + fatTables + "\nfatLength = " + fatLength;
 						result = partitionStart +((clusterKnown - 2) * clusterSize) + reserved + (fatTables * fatLength);
 					}
-					
+
 					if (ByteAddress==true)
 					{
 						result = result * sectorSize;
@@ -220,7 +217,7 @@
 					{
 						result = (physicalKnown - partitionStart - fatTables * fatLength - reserved)/clusterSize + 2;
 					}
-					
+
 					if (ByteAddress==true)
 					{
 						result = result * sectorSize * clusterSize;
@@ -232,24 +229,40 @@
 						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nCluster Address = " + result + "(sectors)";//logic to handle logical address
 					}
 				}
-								
+
+				//output conversion
+				//document.getElementById("addressConversionOutput").value = "1st line";
+				//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nappending sample output";
+
 			}
 			</script>
 		</div>
-		
+
 		<div class="MacConversionTool">
+		<br>
 		Please enter a command in the following format.
 		<br>
-		-T | -D [-f filename | -h hex value]
+		-T | -D [-h hex value]
 		<form>
 				Mac Conversion Tool: <input type="text" name="macConversion" id="macConversion">
-				<input type="button" onclick="macConvert()" value="Submit">
+				<input type="button" onclick="macConvertInput()" value="Submit">
 		</form>
+		<textarea class="FormElement" id="macConversionHexOutput" name="macConversionHexOutput" cols="40" rows="4"></textarea>
+		<br>
+		<br>
+		-T | -D
+		<form>
+				Mac Conversion Tool: <input type="text" name="macConversionFile" id="macConversionFile">
+				<input type="file" id="macFileInput" />
+				<input type="button" onclick="macConvertFile()" value="Submit">
+		</form>
+		<textarea class="FormElement" id="macConversionFileOutput" name="macConversionFileOutput" cols="40" rows="4"></textarea>
+		<br>
 		<br>
 		<script type="text/javascript">
-				function macConvert()
+				function macConvertInput()
 				{
-				
+
 				var MacConversionText = document.getElementById('macConversion').value;
 				var macCommand = new Array();
 				var curToken = "";
@@ -273,7 +286,7 @@
 						macCommand[numCommands] = curToken;
 					}
 				}
-				
+
 				var timeConvert=false, dateConvert=false, macFilename, macHexValue;
 				for(var i=0; i<numCommands; i++)
 				{
@@ -300,7 +313,7 @@
 						//do nothing
 					}
 				}
-				
+
 				if(timeConvert == true)
 				{
 					//logic to handle time conversion
@@ -312,7 +325,7 @@
 			}
 		</script>
 		</div>
-		
+
 		<div class="RawImageTool">
 			Raw Image Tool
 			<br>
@@ -320,7 +333,7 @@
 			Image File: <input type="file" id="fileinput" />
 			<input type="button" name="imageTool" id="imageTool" value="Submit" onclick="readSingleFile()">
 			</form>
-			
+
 <script type="text/javascript">
   function readSingleFile(evt) {
 		var f = evt.target.files[0];   
@@ -332,8 +345,8 @@
 				for( var i = 0; i < files.length; i++ )
 				{
 					files.charAt(i);
-					
-					
+
+
 					/*
 					MBR
 					0x00 | current state of partition 00=inactive, 80=active | 1 byte
@@ -378,7 +391,7 @@
 				var ct = r.result;
 				var words = ct.split(' ');           
 				alert(words[0]);
-				
+
 			}
 			r.readAsText(f);
 		} 
@@ -417,10 +430,10 @@ $( "#files" ).change( function( event )
 		</div>
 			<div class="OutputField">
 			</div>
-			
+
 		</div>
-		
-	
+
+
 	</body>
-	
+
 </html>
