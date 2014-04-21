@@ -35,31 +35,31 @@
 				var numCommands = -1;
 				var isWhiteSpace = new RegExp(/^\s$/);
 				var isEqualSign = new RegExp(/^=+$/);
-				document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
+				//document.getElementById("addressConversionOutput").value = "\Length is: " + AddressConversionText.length;
 
 				for(var i=0;i<AddressConversionText.length;i++)
 				{
 					if(i == (AddressConversionText.length-1))
 					{
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n2nd Statement";
 						curToken += AddressConversionText.charAt(i);
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken = "";
 					}
 					else if(!isWhiteSpace.test(AddressConversionText.charAt(i)) && !isEqualSign.test(AddressConversionText.charAt(i)))
 					{
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n1st Statement";
 						curToken += AddressConversionText.charAt(i);
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n" + AddressConversionText.charAt(i);
 					}
 					else
 					{
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n3rd Statement";
 						numCommands++;
 						AddressCommand[numCommands] = curToken;
-						document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
+						//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\n"+ AddressCommand[numCommands];
 						curToken ="";
 					}
 				}
@@ -82,7 +82,7 @@
 
 				for(var i=0; i<numCommands; i++)
 				{
-					alert(AddressCommand[i] + (AddressCommand[i] == "--physical-known"));
+					//alert(AddressCommand[i] + (AddressCommand[i] == "--physical-known"));
 					if((AddressCommand[i] == "-L") || (AddressCommand[i] == "--logical"))
 					{
 						Logical = true;
@@ -98,7 +98,7 @@
 					else if((AddressCommand[i] == "-b") || (AddressCommand[i] == "--partition-start"))
 					{
 					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = partitionStart = " + AddressCommand[i+1];
-						partitionStart=AddressCommand[i+1];
+						partitionStart=parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if((AddressCommand[i] == "-B") || (AddressCommand[i] == "--byte-address"))
@@ -107,18 +107,18 @@
 					}
 					else if((AddressCommand[i] == "-s") || (AddressCommand[i] == "--sector-size"))
 					{
-						sectorSize=AddressCommand[i+1];
+						sectorSize=parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if((AddressCommand[i] == "-l") || (AddressCommand[i] == "--logical-known"))
 					{
-						logicalKnown=AddressCommand[i+1];
+						logicalKnown=parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if((AddressCommand[i] == "-p") || (AddressCommand[i] == "--physical-known"))
 					{
 					//document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand[" + i + "] = Physical Address = " + AddressCommand[i+1];
-						physicalKnown=AddressCommand[i+1];
+						physicalKnown=parseInt(AddressCommand[i+1]);
 						i++;
 					}
 					else if((AddressCommand[i] == "-c") || (AddressCommand[i] == "--cluster-known"))
