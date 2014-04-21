@@ -370,6 +370,15 @@
 			}
 
 			function loaded(evt) {  
+				var MBRPartState; //0x00 | current state of partition 00=inactive, 80=active | 1 byte
+				var MBRBeginPartHead; //0x01 | beginning of partition head | 1 byte
+				var MBRBeginPartSector; //0x02 | beginning of partition cylinder/sector | 1 word
+				var MBRPartType; //0x04 | type of partition | 1 byte
+				var MBREndPartHead; //0x05 | end of partition head | 1 byte
+				var MBREndPartSector; //0x06 | end of partition cylinder sector | 1 word
+				var MBRNumSectorsToFirstPart; //0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
+				var MBRNumSectorsInPart; //0x0C | number of sectors in the partition | 1 double word
+				
 				// Obtain the read file data    
 				var fileString = evt.target.result;
 				
@@ -380,15 +389,58 @@
                         byteStr = "0" + byteStr;
                     }
                     hex += " " + byteStr;
+					
+					if(i==0)
+					{
+						if(byteStr == "00")
+						{
+							MBRPartState = "inactive";
+						}
+						else if(byteStr =="80")
+						{
+							MBRPartState ="acctive";
+						}
+					}
+					else if(i==1)
+					{
+						MBRBeginPartHead = byteStr.toString(10);
+					}
+					else if(i==2)
+					{
+						MBRBeginPartSector = byteStr;
+					}
+					else if(i==3)
+					{
+						var temp = MBRBeginPartSector;
+						MBRBeginPartSector = byteStr + temp;
+						//this may not work needs testing
+						MBRBeginPartSector = MBRBeginPartSector.toString(10);
+					}
+					else
+					{
+						//do nothing add rest of checks
+					}
                 }
 				
 				//filedump as hex
-                alert(hex);
+                alert(MBRPartState + "\n"+ MBRBeginPartHead + "\n" + MBRBeginPartSector + "\n"+ hex);
 				
 				// filedump as binary
-				alert(fileString);
+				//alert(fileString);
 			}
-
+			
+			function MBR(hexValue)
+			{
+				var MBRPartState; //0x00 | current state of partition 00=inactive, 80=active | 1 byte
+				var MBRBeginPartHead; //0x01 | beginning of partition head | 1 byte
+				var MBRBeginPartSector; //0x02 | beginning of partition cylinder/sector | 1 word
+				var MBRPartType; //0x04 | type of partition | 1 byte
+				var MBREndPartHead; //0x05 | end of partition head | 1 byte
+				var MBREndPartSector; //0x06 | end of partition cylinder sector | 1 word
+				var MBRNumSectorsToFirstPart; //0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
+				var MBRNumSectorsInPart; //0x0C | number of sectors in the partition | 1 double word
+				
+			}
 			function errorHandler(evt) {
 				if(evt.target.error.name == "NotReadableError") {
 					// The file could not be read
@@ -402,14 +454,14 @@
   function readSingleFile(evt) {
 					/*
 					MBR
-					0x00 | current state of partition 00=inactive, 80=active | 1 byte
-					0x01 | beginning of partition head | 1 byte
-					0x02 | beginning of partition cylinder/sector | 1 word
-					0x04 | type of partition | 1 byte
-					0x05 | end of partition head | 1 byte
-					0x06 | end of partition cylinder sector | 1 word
-					0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
-					0x0C | number of sectors in the partition | 1 double word
+					var MBRPartState; //0x00 | current state of partition 00=inactive, 80=active | 1 byte
+					var MBRBeginPartHead; //0x01 | beginning of partition head | 1 byte
+					var MBRBeginPartSector; //0x02 | beginning of partition cylinder/sector | 1 word
+					var MBRPartType; //0x04 | type of partition | 1 byte
+					var MBREndPartHead; //0x05 | end of partition head | 1 byte
+					var MBREndPartSector; //0x06 | end of partition cylinder sector | 1 word
+					var MBRNumSectorsToFirstPart; //0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
+					var MBRNumSectorsInPart; //0x0C | number of sectors in the partition | 1 double word
 					
 					Partition Entry
 					0x000 	| executable boot code | 446 bytes 
