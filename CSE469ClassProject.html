@@ -346,6 +346,70 @@
 				}
 			}
 		</script>
+		
+		<script type="text/javascript">
+		function macConvertFile() {  
+					// obtain input element through DOM 
+  
+					var file = document.getElementById('macFileInput').files[0];
+					if(file){
+						getAsText(file);
+					}
+				}
+
+			function getAsText(readFile) {
+        
+				var reader = new FileReader();
+				
+				// Read file into memory as UTF-16      
+				reader.readAsBinaryString(readFile);
+  
+				// Handle progress, success, and errors
+				reader.onprogress = updateProgress;
+				reader.onload = loaded;
+				reader.onerror = errorHandler;
+			}
+
+			function updateProgress(evt) {
+				if (evt.lengthComputable) {
+					// evt.loaded and evt.total are ProgressEvent properties
+					var loaded = (evt.loaded / evt.total);
+					if (loaded < 1) {
+						// Increase the prog bar length
+						// style.width = (loaded * 200) + "px";
+					}
+				}
+			}
+
+			function loaded(evt) {  
+				
+				// Obtain the read file data    
+				var fileString = evt.target.result;
+				
+				var hex = "";
+                for (var i = 0; i < fileString.length; i++) {
+                    var byteStr = fileString.charCodeAt(i).toString(16);
+                    if (byteStr.length < 2) {
+                        byteStr = "0" + byteStr;
+                    }
+                    hex += " " + byteStr;
+					
+                }
+				
+				//filedump as hex
+                alert(MBRPartState + "\n"+ MBRBeginPartHead + "\n" + MBRBeginPartSector + "\n"+ hex);
+				
+				// filedump as binary
+				//alert(fileString);
+			}
+			
+			function errorHandler(evt) {
+				if(evt.target.error.name == "NotReadableError") {
+					// The file could not be read
+				}
+			}
+				
+		</script>
 		</div>
 
 		<div class="RawImageTool">
