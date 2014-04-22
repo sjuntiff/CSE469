@@ -336,7 +336,30 @@
 					MonthArray[9]="October";
 					MonthArray[10]="November";
 					MonthArray[11]="December";
+				var hexToBinaryArray = new Array();
+					hexToBinaryArray[0]="0000";
+					hexToBinaryArray[1]="0001";
+					hexToBinaryArray[2]="0010";
+					hexToBinaryArray[3]="0011";
+					hexToBinaryArray[4]="0100";
+					hexToBinaryArray[5]="0101";
+					hexToBinaryArray[6]="0110";
+					hexToBinaryArray[7]="0111";
+					hexToBinaryArray[8]="1000";
+					hexToBinaryArray[9]="1001";
+					hexToBinaryArray[10]="1010";
+					hexToBinaryArray[11]="1011";
+					hexToBinaryArray[12]="1100";
+					hexToBinaryArray[13]="1101";
+					hexToBinaryArray[14]="1110";
+					hexToBinaryArray[15]="1111";
 				
+				var macbinaryvalue="";
+				
+				macbinaryvalue = hexToBinaryArray[parseInt(macHexValue.substring(2,3),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(3,4),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(4,5),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(5),16)];
 				
 				if(timeConvert == true)
 				{
@@ -349,13 +372,13 @@
 				{
 					//logic to handle date conversion
 					
-					//year = parseInt(macHexValue.charAt(2), 16) * 8 + Math.floor(parseInt(macHexValue.charAt(3)/2));
-					//year = parseInt(macHexValue.charAt(2), 16);
-					year = Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,9)) + 1980;
-					month = Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,5))-Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,9)) * Math.pow(2,4);
-					day = parseInt(macHexValue.substring(2), 16) - Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,5)) * Math.pow(2,5);				
-					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Test: " + macHexValue;
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Hex Value: " + macHexValue;
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Binary Value: " + macbinaryvalue;
 					
+					year = parseInt(macbinaryvalue.substring(31))*Math.pow(2,7);
+					
+					
+					/*
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDate: ";
 					
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Year: " + year;
@@ -363,7 +386,7 @@
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nMonth: " + MonthArray[month-1];
 					
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDay: " + day;
-					
+					*/
 				}
 			}
 		</script>
