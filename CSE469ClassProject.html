@@ -475,22 +475,7 @@
                     }
                     hex += " " + byteStr;
 					
-					if(i==0)
-					{
-						if(byteStr == "00")
-						{
-							MBRPartState = "inactive";
-						}
-						else if(byteStr =="80")
-						{
-							MBRPartState ="acctive";
-						}
-					}
-					else if(i==1)
-					{
-						MBRBeginPartHead = byteStr.toString(10);
-					}
-					else if(i==2)
+					if(i==2)
 					{
 						MBRBeginPartSector = byteStr;
 					}
@@ -501,31 +486,135 @@
 						//this may not work needs testing
 						MBRBeginPartSector = MBRBeginPartSector.toString(10);
 					}
+					else if(i==4)
+					{
+						alert(byteStr);
+						if(byteStr == "01")
+						{
+							MBRPartType = "01 DOS 12-bit FAT";
+						}
+						else if(byteStr == "04")
+						{
+							MBRPartType = "04 DOS 16-bit FAT less than 32mb";
+						}
+						else if(byteStr == "05")
+						{
+							MBRPartType = "05 Extended Partition";
+						}
+						else if(byteStr == "06")
+						{
+							MBRPartType = "06 DOS 16-bit FAT greater than 32mb";
+						}
+						else if(byteStr == "07")
+						{
+							MBRPartType = "07 NTFS";
+						}
+						else if(byteStr == "08")
+						{
+							MBRPartType = "08 AIX bootable partition";
+						}
+						else if(byteStr == "09")
+						{
+							MBRPartType = "09 AIX data partition";
+						}
+						else if(byteStr == "0B")
+						{
+							MBRPartType = "0B DOS 32-bit FAT";
+						}
+						else if(byteStr == "0C")
+						{
+							MBRPartType = "0C DOS 32-bit FAT interrupt 13 support";
+						}
+						else if(byteStr == "17")
+						{
+							MBRPartType = "17 Hidden NTFS partition";
+						}
+						else if(byteStr == "1B")
+						{
+							MBRPartType = "1B Hidden FAT32 partition";
+						}
+						else if(byteStr == "1E")
+						{
+							MBRPartType = "1E Hidden VFAT partition";
+						}
+						else if(byteStr == "3C")
+						{
+							MBRPartType = "3C Partition Magic recovery partition";
+						}
+						else if(byteStr == "66" || byteStr == "67" || byteStr == "68" || byteStr == "69")
+						{
+							MBRPartType = "66-69 Novell partitions";
+						}
+						else if(byteStr == "81")
+						{
+							MBRPartType = "81 Linux";
+						}
+						else if(byteStr == "82")
+						{
+							MBRPartType = "82 Linux swap partition";
+						}
+						else if(byteStr == "83")
+						{
+							MBRPartType = "83 Linux native file systems";
+						}
+						else if(byteStr == "86")
+						{
+							MBRPartType = "86 FAT16 volume/stripe set";
+						}
+						else if(byteStr == "87")
+						{
+							MBRPartType = "87 High Performance File System";
+						}
+						else if(byteStr == "A5")
+						{
+							MBRPartType = "A5 FreeBSD and BSD/386";
+						}
+						else if(byteStr == "A6")
+						{
+							MBRPartType = "A6 OpenBSD";
+						}
+						else if(byteStr == "A9")
+						{
+							MBRPartType = "A9 NetBSD";
+						}
+						else if(byteStr == "C7")
+						{
+							MBRPartType = "C7 Corrupted NTFS";
+						}
+						else if(byteStr == "EB")
+						{
+							MBRPartType = "EB BeOS";
+						}
+						else
+						{
+							MBRPartType = "not known type";
+						}
+						
+					}
+					else if(i==6)
+					{
+						MBREndPartSector = byteStr;
+					}
+					else if(i==7)
+					{
+						var temp = MBREndPartSector;
+						MBREndPartSector = byteStr + temp;
+						//this may not work needs testing
+						MBREndPartSector = MBREndPartSector.toString(10);
+					}
 					else
 					{
-						//do nothing add rest of checks
+						//do nothing
 					}
                 }
 				
 				//filedump as hex
-                alert(MBRPartState + "\n"+ MBRBeginPartHead + "\n" + MBRBeginPartSector + "\n"+ hex);
+                alert(MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex);
 				
 				// filedump as binary
 				//alert(fileString);
 			}
 			
-			function MBR(hexValue)
-			{
-				var MBRPartState; //0x00 | current state of partition 00=inactive, 80=active | 1 byte
-				var MBRBeginPartHead; //0x01 | beginning of partition head | 1 byte
-				var MBRBeginPartSector; //0x02 | beginning of partition cylinder/sector | 1 word
-				var MBRPartType; //0x04 | type of partition | 1 byte
-				var MBREndPartHead; //0x05 | end of partition head | 1 byte
-				var MBREndPartSector; //0x06 | end of partition cylinder sector | 1 word
-				var MBRNumSectorsToFirstPart; //0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
-				var MBRNumSectorsInPart; //0x0C | number of sectors in the partition | 1 double word
-				
-			}
 			function errorHandler(evt) {
 				if(evt.target.error.name == "NotReadableError") {
 					// The file could not be read
@@ -539,30 +628,28 @@
   function readSingleFile(evt) {
 					/*
 					MBR
-					var MBRPartState; //0x00 | current state of partition 00=inactive, 80=active | 1 byte
-					var MBRBeginPartHead; //0x01 | beginning of partition head | 1 byte
-					var MBRBeginPartSector; //0x02 | beginning of partition cylinder/sector | 1 word
-					var MBRPartType; //0x04 | type of partition | 1 byte
-					var MBREndPartHead; //0x05 | end of partition head | 1 byte
-					var MBREndPartSector; //0x06 | end of partition cylinder sector | 1 word
-					var MBRNumSectorsToFirstPart; //0x08 | number of sectors between the MBR and the 1st sector in the partition | 1 double word
-					var MBRNumSectorsInPart; //0x0C | number of sectors in the partition | 1 double word
+					0x04, 0x02, 0x06 minus 0x02
 					
-					Partition Entry
-					0x000 	| executable boot code | 446 bytes 
-					0x01BE	| 1st partition entry | 16 bytes
-					0x01CE	| 2nd partition entry | 16 bytes
-					0x01DE	| 3rd partition entry | 16 bytes
-					0x01EE	| 4th partition entry | 16 bytes
-					0x01FE	|  Boot record signature (0x55 0xAA) 2 bytes
+					//0x02 | beginning of partition cylinder/sector | 1 word
+					//0x04 | type of partition | 1 byte
+					//0x06 | end of partition cylinder/sector | 1 word
+					
+					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 					
 					VBR
+					Reserved area: Start sector: 0	Ending sector: (0x0014-0x0015 -1) sector	Size: (0x0014-0x0015)	sectors
+					Sectors per cluster: (0x0013) sectors
+					FAT area: Start sector: (0x0014-0x0015) Ending sector: (0x0014-0x0015 + (0x0016)*(0x0036-0x0039 or 0x0022-0x0023))
+					# of FATs: (0x0016)
+					The size of each FAT: (0x0036-0x0039 or 0x0022-0x0023) sectors
+					The first sector of cluster 2: (0x0014-0x0015 + (0x0016)*(0x0036-0x0039 or 0x0022-0x0023)) + (0x0017-0x0018) sectors
+					
 					0-2 assembly instruction to jump to boot code
 					3-10 OEM Name in ASCII
 					11-12 bytes per sector
-					13 sectors per cluster
-					14-15 size in sectors of the reserved area
-					16-16 number of FATs
+					->>13 sectors per cluster | Sectors per cluster: # sectors
+					->>14-15 size in sectors of the reserved area	| start sector: 0 Ending Sector: (14-15 - 1) Size (14-15) sectors
+					->>16-16 number of FATs | # of FATs: #
 					17-18 maximum number of files in the root directory
 					19-20 16-bit value of number of sectors in FS (FAT32:0)
 					21-21 media type
@@ -571,13 +658,12 @@
 					26-27 number of heads
 					28-31 number of sectors before the start of partition
 					32-35 number of sectors in file system
-					36-39 32-bit size in sectors of each FAT
+					->>36-39 32-bit size in sectors of each FAT | The size of each FAT: # sectors
 					67-70 volume serial number
 					71-81 volume name
 					82-89 file system type label
 					510-511 signature value
 					*/
-
 </script>
 
 			<br>
