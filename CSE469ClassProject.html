@@ -314,15 +314,28 @@
 				}
 
 				
-				//Displays the macCommand array
+				/*//Displays the macCommand array
 				///////////////////////////////////
 				for(var i=0; i<numCommands+1; i++)
 				{
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nmacCommand Array = ";
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + macCommand[i] + ", ";
-				}
+				}*/
 				
 				var year=0, month=0, day=0;
+				var MonthArray=new Array();
+					MonthArray[0]="January";
+					MonthArray[1]="February";
+					MonthArray[2]="March";
+					MonthArray[3]="April";
+					MonthArray[4]="May";
+					MonthArray[5]="June";
+					MonthArray[6]="July";
+					MonthArray[7]="August";
+					MonthArray[8]="September";
+					MonthArray[9]="October";
+					MonthArray[10]="November";
+					MonthArray[11]="December";
 				
 				
 				if(timeConvert == true)
@@ -336,12 +349,20 @@
 				{
 					//logic to handle date conversion
 					
-					//year = parseInt(macHexValue.charAt(2)) * 8 + Math.floor(parseInt(macHexValue.charAt(3)/2));
-					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Test: " + macHexValue);
+					//year = parseInt(macHexValue.charAt(2), 16) * 8 + Math.floor(parseInt(macHexValue.charAt(3)/2));
+					//year = parseInt(macHexValue.charAt(2), 16);
+					year = Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,9)) + 1980;
+					month = Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,5))-Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,9)) * Math.pow(2,4);
+					day = parseInt(macHexValue.substring(2), 16) - Math.floor(parseInt(macHexValue.substring(2), 16)/Math.pow(2,5)) * Math.pow(2,5);				
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Test: " + macHexValue;
 					
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDate: ";
 					
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Year: " + year;
+					
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nMonth: " + MonthArray[month-1];
+					
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDay: " + day;
 					
 				}
 			}
