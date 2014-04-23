@@ -356,10 +356,11 @@
 				
 				var macbinaryvalue="";
 				
-				macbinaryvalue = hexToBinaryArray[parseInt(macHexValue.substring(2,3),16)];
-				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(3,4),16)];
-				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(4,5),16)];
+				macbinaryvalue = hexToBinaryArray[parseInt(macHexValue.substring(4,5),16)];
 				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(5),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(2,3),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(3,4),16)];
+
 				
 				if(timeConvert == true)
 				{
@@ -375,17 +376,16 @@
 					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Hex Value: " + macHexValue;
 					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Binary Value: " + macbinaryvalue;
 					
-					year = parseInt(macbinaryvalue.substring(31))*Math.pow(2,7);
+					year = parseInt(macbinaryvalue.substring(0,1))*Math.pow(2,6) + parseInt(macbinaryvalue.substring(1,2))*Math.pow(2,5) + parseInt(macbinaryvalue.substring(2,3))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(3,4))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(4,5))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(5,6))*2 + parseInt(macbinaryvalue.substring(6,7)) + 1980;
+					month = parseInt(macbinaryvalue.substring(7,8))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(8,9))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(9,10))* 2 + parseInt(macbinaryvalue.substring(10,11));
+					day = parseInt(macbinaryvalue.substring(11,12))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(12,13))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(13,14))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(14,15))*2 + parseInt(macbinaryvalue.substring(15));
 					
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDate: " + MonthArray[month-1] + " " + day + ", " + year;
 					
 					/*
-					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDate: ";
-					
-					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Year: " + year;
-					
-					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nMonth: " + MonthArray[month-1];
-					
-					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDay: " + day;
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "Year: " + year;
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nMonth: " + MonthArray[month-1];
+					//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nDay: " + day;
 					*/
 				}
 			}
