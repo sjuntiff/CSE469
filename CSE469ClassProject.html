@@ -446,10 +446,95 @@
 
 			function loaded(evt) {  
 				
-				// Obtain the read file data    
-				var fileString = evt.target.result;
+				var MacConversionText = document.getElementById('macFileInput').value;
+				var macCommand = new Array();
+				var curToken = "";
+				var numCommands = -1;
+				var white = new RegExp(/^\s$/);
+
+				for(var i=0;i<MacConversionText.length;i++)
+				{
+					if(i == (MacConversionText.length-1))
+					{
+						curToken += MacConversionText.charAt(i);
+						numCommands++;
+						macCommand[numCommands] = curToken;
+						curToken="";
+					}
+					else if(!white.test(MacConversionText.charAt(i)))
+					{
+						curToken += MacConversionText.charAt(i);
+					}
+					else
+					{
+						numCommands++;
+						macCommand[numCommands] = curToken;
+						curToken="";
+					}
+				}
 				
-				var hex = "";
+				var timeConvert=false, dateConvert=false, macHexValue;
+				for(var i=0; i<numCommands; i++)
+				{
+					if(macCommand[i] == "-T")
+					{
+						timeConvert = true;
+					}
+					else if(macCommand[i] == "-D")
+					{
+						dateConvert = true;
+					}
+					else 
+					{
+						//do nothing
+					}
+				}
+
+				
+				/*//Displays the macCommand array
+				///////////////////////////////////
+				for(var i=0; i<numCommands+1; i++)
+				{
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nmacCommand Array = ";
+					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + macCommand[i] + ", ";
+				}*/
+				
+				var year=0, month=0, day=0, hour=0, minute=0, second=0;
+				var MonthArray=new Array();
+					MonthArray[0]="January";
+					MonthArray[1]="February";
+					MonthArray[2]="March";
+					MonthArray[3]="April";
+					MonthArray[4]="May";
+					MonthArray[5]="June";
+					MonthArray[6]="July";
+					MonthArray[7]="August";
+					MonthArray[8]="September";
+					MonthArray[9]="October";
+					MonthArray[10]="November";
+					MonthArray[11]="December";
+				var hexToBinaryArray = new Array();
+					hexToBinaryArray[0]="0000";
+					hexToBinaryArray[1]="0001";
+					hexToBinaryArray[2]="0010";
+					hexToBinaryArray[3]="0011";
+					hexToBinaryArray[4]="0100";
+					hexToBinaryArray[5]="0101";
+					hexToBinaryArray[6]="0110";
+					hexToBinaryArray[7]="0111";
+					hexToBinaryArray[8]="1000";
+					hexToBinaryArray[9]="1001";
+					hexToBinaryArray[10]="1010";
+					hexToBinaryArray[11]="1011";
+					hexToBinaryArray[12]="1100";
+					hexToBinaryArray[13]="1101";
+					hexToBinaryArray[14]="1110";
+					hexToBinaryArray[15]="1111";
+				
+				// Obtain the read file data    
+				var fileString = evt.target.result, bytes=[];
+				var hex = "", macbinaryvalue;
+				
                 for (var i = 0; i < fileString.length; i++) {
                     var byteStr = fileString.charCodeAt(i).toString(16);
                     if (byteStr.length < 2) {
@@ -459,11 +544,63 @@
 					
                 }
 				
-				//filedump as hex
-                alert(MBRPartState + "\n"+ MBRBeginPartHead + "\n" + MBRBeginPartSector + "\n"+ hex);
+				//converting hex string to binary
+				for(var i=0; i< hex.length-1; i+=2){
+					bytes.push(parseInt(hex.substr(i, 2), 16));
+				}
 				
-				// filedump as binary
-				//alert(fileString);
+				macbinaryvalue= String.fromCharCode.apply(String, bytes);
+				
+				//macbinaryvalue = hexToBinaryArray[parseInt(macHexValue.substring(4,5),16)];
+				//macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(5),16)];
+				//macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(2,3),16)];
+				//macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(3,4),16)];
+
+				if(dateConvert == true)
+				{
+					dateConversion();
+				}
+				else if(timeConvert ==true)
+				{
+					timeConversion();
+				}
+				else
+				{
+					//do nothing
+				}
+				
+				function dateConversion(){
+					year = parseInt(macbinaryvalue.substring(0,1))*Math.pow(2,6) + parseInt(macbinaryvalue.substring(1,2))*Math.pow(2,5) + parseInt(macbinaryvalue.substring(2,3))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(3,4))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(4,5))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(5,6))*2 + parseInt(macbinaryvalue.substring(6,7)) + 1980;
+					month = parseInt(macbinaryvalue.substring(7,8))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(8,9))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(9,10))* 2 + parseInt(macbinaryvalue.substring(10,11));
+					day = parseInt(macbinaryvalue.substring(11,12))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(12,13))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(13,14))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(14,15))*2 + parseInt(macbinaryvalue.substring(15));
+					alert(month + "/" + day + "/" + year);
+				}
+				
+				function timeConversion(){
+				//logic to handle time conversion
+					hour = parseInt(macbinaryvalue.substring(0,1))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(1,2))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(2,3))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(3,4))*2 + parseInt(macbinaryvalue.substring(4,5));
+					minute = parseInt(macbinaryvalue.substring(5,6))*Math.pow(2,5) + parseInt(macbinaryvalue.substring(6,7))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(7,8))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(8,9))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(9,10))* 2 + parseInt(macbinaryvalue.substring(10,11));
+					second = (parseInt(macbinaryvalue.substring(11,12))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(12,13))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(13,14))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(14,15))*2 + parseInt(macbinaryvalue.substring(15)))*2;
+					
+					if (hour == 0)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + 12 + ":" + minute + ":" + second + " AM";
+					}
+					else if (hour==12)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " PM";
+					}
+					else if (hour>12)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour - 12 + ":" + minute + ":" + second + " PM";
+					}
+					else if (hour<12)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " AM";
+					}
+					
+				}
+				
 			}
 			
 			function errorHandler(evt) {
