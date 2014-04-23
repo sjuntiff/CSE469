@@ -72,13 +72,13 @@
 
 
 				
-				//Displays the AddressCommand array
+				/*//Displays the AddressCommand array
 				////////////////////////
 				for(var i=0; i<numCommands+1; i++)
 				{
 					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + "\nAddressCommand Array = ";
 					document.getElementById("addressConversionOutput").value = document.getElementById("addressConversionOutput").value + AddressCommand[i] + ", ";
-				}
+				}*/
 
 				for(var i=0; i<numCommands; i++)
 				{
@@ -322,7 +322,7 @@
 					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + macCommand[i] + ", ";
 				}*/
 				
-				var year=0, month=0, day=0;
+				var year=0, month=0, day=0, hour=0, minute=0, second=0;
 				var MonthArray=new Array();
 					MonthArray[0]="January";
 					MonthArray[1]="February";
@@ -366,8 +366,27 @@
 				{
 					//logic to handle time conversion
 					
-					document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: ";
-
+					hour = parseInt(macbinaryvalue.substring(0,1))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(1,2))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(2,3))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(3,4))*2 + parseInt(macbinaryvalue.substring(4,5));
+					minute = parseInt(macbinaryvalue.substring(5,6))*Math.pow(2,5) + parseInt(macbinaryvalue.substring(6,7))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(7,8))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(8,9))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(9,10))* 2 + parseInt(macbinaryvalue.substring(10,11));
+					second = (parseInt(macbinaryvalue.substring(11,12))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(12,13))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(13,14))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(14,15))*2 + parseInt(macbinaryvalue.substring(15)))*2;
+					
+					if (hour == 0)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + 12 + ":" + minute + ":" + second + " AM";
+					}
+					else if (hour==12)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " PM";
+					}
+					else if (hour>12)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour - 12 + ":" + minute + ":" + second + " PM";
+					}
+					else if (hour<12)
+					{
+						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " AM";
+					}
+					
 				}
 				if(dateConvert == true)
 				{
