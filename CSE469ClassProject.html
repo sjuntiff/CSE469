@@ -535,13 +535,14 @@
 				var fileString = evt.target.result, bytes=[];
 				var hex = "", macbinaryvalue;
 				
-                for (var i = 0; i < fileString.length; i++) {
+				
+                /*for (var i = 0; i < fileString.length; i++) {
                     var byteStr = fileString.charCodeAt(i).toString(16);
                     if (byteStr.length < 2) {
                         byteStr = "0" + byteStr;
                     }
                     hex += " " + byteStr;
-                }
+                }*/
 				
 				/*//converting hex string to binary
 				for(var i=2; i< hex.length-1; i+=2){
@@ -550,10 +551,11 @@
 				
 				macbinaryvalue= String.fromCharCode.apply(String, bytes);*/
 				
-				macbinaryvalue = hexToBinaryArray[parseInt(hex.substring(4,5),16)];
-				macbinaryvalue += hexToBinaryArray[parseInt(hex.substring(5),16)];
-				macbinaryvalue += hexToBinaryArray[parseInt(hex.substring(2,3),16)];
-				macbinaryvalue += hexToBinaryArray[parseInt(hex.substring(3,4),16)];
+				macbinaryvalue = hexToBinaryArray[parseInt(fileString.substring(4,5),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(fileString.substring(5),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(fileString.substring(2,3),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(fileString.substring(3,4),16)];
+				alert(macbinaryvalue);
 
 				if(dateConvert == true)
 				{
