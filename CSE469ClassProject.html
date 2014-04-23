@@ -264,7 +264,7 @@
 				function macConvertInput()
 				{
 				//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTesting Button";
-				var MacConversionText = document.getElementById('macConversion').value;
+				var MacConversionText = document.getElementById('macConversionFile').value;
 				var macCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
@@ -449,7 +449,7 @@
 			function macloaded(evt) {  
 				
 				alert("gets to loaded event");
-				var MacConversionText = document.getElementById('macFileInput').value;
+				var MacConversionText = document.getElementById('macConversionFile').value;
 				var macCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
@@ -462,6 +462,7 @@
 						curToken += MacConversionText.charAt(i);
 						numCommands++;
 						macCommand[numCommands] = curToken;
+						alert(curToken);
 						curToken="";
 					}
 					else if(!white.test(MacConversionText.charAt(i)))
@@ -472,18 +473,18 @@
 					{
 						numCommands++;
 						macCommand[numCommands] = curToken;
+						alert(curToken);
 						curToken="";
 					}
 				}
 				
 				var timeConvert=false, dateConvert=false, macHexValue;
-				for(var i=0; i<numCommands; i++)
-				{
-					if(macCommand[i] == "-T")
+					alert(macCommand[0]);
+					if(macCommand[0] == "-T")
 					{
 						timeConvert = true;
 					}
-					else if(macCommand[i] == "-D")
+					else if(macCommand[0] == "-D")
 					{
 						dateConvert = true;
 					}
@@ -491,7 +492,6 @@
 					{
 						//do nothing
 					}
-				}
 
 				
 				/*//Displays the macCommand array
