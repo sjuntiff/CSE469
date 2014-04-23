@@ -254,7 +254,7 @@
 		-T | -D
 		<form>
 				Mac Conversion Tool: <input type="text" name="macConversionFile" id="macConversionFile">
-				<input type="file" id="macFileInput" />
+				<input type="file" id="macFileInput" name="files[]" multiple />
 				<input type="button" onclick="macConvertFile()" value="Submit">
 		</form>
 		<textarea class="FormElement" id="macConversionFileOutput" name="macConversionFileOutput" cols="40" rows="4"></textarea>
@@ -413,27 +413,29 @@
 		<script type="text/javascript">
 		function macConvertFile() {  
 					// obtain input element through DOM 
-  
 					var file = document.getElementById('macFileInput').files[0];
+					alert(file);
 					if(file){
-						getAsText(file);
+						macgetAsText(file);
+						alert("gets to function call");
 					}
 				}
 
-			function getAsText(readFile) {
+			function macgetAsText(readFile) {
         
+				alert("gets to getastext");
 				var reader = new FileReader();
 				
 				// Read file into memory as UTF-16      
 				reader.readAsBinaryString(readFile);
   
 				// Handle progress, success, and errors
-				reader.onprogress = updateProgress;
-				reader.onload = loaded;
-				reader.onerror = errorHandler;
+				reader.onprogress = macupdateProgress;
+				reader.onload = macloaded;
+				reader.onerror = macerrorHandler;
 			}
 
-			function updateProgress(evt) {
+			function macupdateProgress(evt) {
 				if (evt.lengthComputable) {
 					// evt.loaded and evt.total are ProgressEvent properties
 					var loaded = (evt.loaded / evt.total);
@@ -444,8 +446,9 @@
 				}
 			}
 
-			function loaded(evt) {  
+			function macloaded(evt) {  
 				
+				alert("gets to loaded event");
 				var MacConversionText = document.getElementById('macFileInput').value;
 				var macCommand = new Array();
 				var curToken = "";
@@ -543,17 +546,17 @@
                     hex += " " + byteStr;
                 }
 				
-				//converting hex string to binary
+				/*//converting hex string to binary
 				for(var i=2; i< hex.length-1; i+=2){
 					bytes.push(parseInt(hex.substr(i, 2), 16));
 				}
 				
-				macbinaryvalue= String.fromCharCode.apply(String, bytes);
+				macbinaryvalue= String.fromCharCode.apply(String, bytes);*/
 				
-				//macbinaryvalue = hexToBinaryArray[parseInt(macHexValue.substring(4,5),16)];
-				//macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(5),16)];
-				//macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(2,3),16)];
-				//macbinaryvalue += hexToBinaryArray[parseInt(macHexValue.substring(3,4),16)];
+				macbinaryvalue = hexToBinaryArray[parseInt(hex.substring(4,5),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(hex.substring(5),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(hex.substring(2,3),16)];
+				macbinaryvalue += hexToBinaryArray[parseInt(hex.substring(3,4),16)];
 
 				if(dateConvert == true)
 				{
@@ -572,7 +575,7 @@
 					year = parseInt(macbinaryvalue.substring(0,1))*Math.pow(2,6) + parseInt(macbinaryvalue.substring(1,2))*Math.pow(2,5) + parseInt(macbinaryvalue.substring(2,3))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(3,4))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(4,5))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(5,6))*2 + parseInt(macbinaryvalue.substring(6,7)) + 1980;
 					month = parseInt(macbinaryvalue.substring(7,8))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(8,9))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(9,10))* 2 + parseInt(macbinaryvalue.substring(10,11));
 					day = parseInt(macbinaryvalue.substring(11,12))*Math.pow(2,4) + parseInt(macbinaryvalue.substring(12,13))*Math.pow(2,3) + parseInt(macbinaryvalue.substring(13,14))*Math.pow(2,2) + parseInt(macbinaryvalue.substring(14,15))*2 + parseInt(macbinaryvalue.substring(15));
-					alert(month + "/" + day + "/" + year);
+					alert("gets to date" + month + "/" + day + "/" + year);
 				}
 				
 				function timeConversion(){
@@ -583,28 +586,28 @@
 					
 					if (hour == 0)
 					{
-						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + 12 + ":" + minute + ":" + second + " AM";
+						document.getElementById("macConversionFileOutput").value = document.getElementById("macConversionFileOutput").value + "\nTime: " + 12 + ":" + minute + ":" + second + " AM";
 					}
 					else if (hour==12)
 					{
-						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " PM";
+						document.getElementById("macConversionFileOutput").value = document.getElementById("macConversionFileOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " PM";
 					}
 					else if (hour>12)
 					{
-						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour - 12 + ":" + minute + ":" + second + " PM";
+						document.getElementById("macConversionFileOutput").value = document.getElementById("macConversionFileOutput").value + "\nTime: " + hour - 12 + ":" + minute + ":" + second + " PM";
 					}
 					else if (hour<12)
 					{
-						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " AM";
+						document.getElementById("macConversionFileOutput").value = document.getElementById("macConversionFileOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " AM";
 					}
 					
-					alert(hour+":"+minute+":"+second);
+					alert("gets to time" + hour+":"+minute+":"+second);
 					
 				}
 				
 			}
 			
-			function errorHandler(evt) {
+			function macerrorHandler(evt) {
 				if(evt.target.error.name == "NotReadableError") {
 					// The file could not be read
 				}
