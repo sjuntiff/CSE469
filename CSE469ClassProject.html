@@ -541,11 +541,10 @@
                         byteStr = "0" + byteStr;
                     }
                     hex += " " + byteStr;
-					
                 }
 				
 				//converting hex string to binary
-				for(var i=0; i< hex.length-1; i+=2){
+				for(var i=2; i< hex.length-1; i+=2){
 					bytes.push(parseInt(hex.substr(i, 2), 16));
 				}
 				
@@ -598,6 +597,8 @@
 					{
 						document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTime: " + hour + ":" + minute + ":" + second + " AM";
 					}
+					
+					alert(hour+":"+minute+":"+second);
 					
 				}
 				
