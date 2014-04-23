@@ -264,7 +264,7 @@
 				function macConvertInput()
 				{
 				//document.getElementById("macConversionHexOutput").value = document.getElementById("macConversionHexOutput").value + "\nTesting Button";
-				var MacConversionText = document.getElementById('macConversionFile').value;
+				var MacConversionText = document.getElementById('macConversion').value;
 				var macCommand = new Array();
 				var curToken = "";
 				var numCommands = -1;
@@ -462,7 +462,6 @@
 						curToken += MacConversionText.charAt(i);
 						numCommands++;
 						macCommand[numCommands] = curToken;
-						alert(curToken);
 						curToken="";
 					}
 					else if(!white.test(MacConversionText.charAt(i)))
@@ -473,13 +472,11 @@
 					{
 						numCommands++;
 						macCommand[numCommands] = curToken;
-						alert(curToken);
 						curToken="";
 					}
 				}
 				
 				var timeConvert=false, dateConvert=false, macHexValue;
-					alert(macCommand[0]);
 					if(macCommand[0] == "-T")
 					{
 						timeConvert = true;
