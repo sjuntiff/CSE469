@@ -622,12 +622,13 @@
 			<br>
 			Image File: 
 			<input type="file" id="ImageFile" name="files[]" multiple />
-			<input type="button" onclick="ImageFile()" value="Submit">
+			<input type="button" onclick="RawImageFile()" value="Submit">
 			<br>
 			<textarea class="FormElement" id="RawImageOutput" name="RawImageOutput" cols="40" rows="4"></textarea>
 
 			<script type="text/javascript">
-				function ImageFile() {  
+				function RawImageFile()
+				{  
 					// obtain input element through DOM 
   
 					var file = document.getElementById('ImageFile').files[0];
@@ -674,6 +675,7 @@
 				var fileString = evt.target.result;
 				
 				var hex = "";
+				/*
 				for(var i =446;i<fileString.length;i++)
 				{
                 for (var j =0; j <16;j++) {
@@ -817,16 +819,20 @@
                 }
 				
 				alert(MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex);
-				document.getElementById("RawImageOutput").value = document.getElementById("RawImageOutput").value + "\n (" + MBRPartType + "), " + parseInt(MBRBeginPartSector, 16) + ", " + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex;
+				document.getElementById("RawImageOutput").value = document.getElementById("RawImageOutput").value + "\n (" + MBRPartType + "), " + parseInt(MBRBeginPartSector, 16) + ", " + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex + "\n";
 				i+=15;
 				hex="";
 				if(i>=509)
 				{i+=2;}
 				}
-                
-				/*
-				function VBR(start)
-				{
+                */
+				 for (var i =0; i <fileString.length;i++) {
+                    var byteStr = fileString.charCodeAt(i).toString(16);
+                    if (byteStr.length < 2) {
+                        byteStr = "0" + byteStr;
+                    }
+                    hex += " " + byteStr;
+					
 					var VBRSectorsPerCluster, VBRSizeRA, VBRNumFATs, VBRSizeOfFATs, VBRMaxRootDirector;
 					if(i==13)
 					{
@@ -845,7 +851,7 @@
 						VBRSizeRA += temp;
 					
 					}
-					elseif(i==16)
+					else if(i==16)
 					{
 						VBRNumFATs = byteStr;
 						//->>16-16 number of FATs | # of FATs: #
@@ -884,18 +890,17 @@
 						VBRSizeOfFATs += temp;
 						//->>36-39 32-bit size in sectors of each FAT | The size of each FAT: # sectors
 					}
-				}*/
+				}
 					
-				/*
-				document.getElementById("RawImageOutput").value
-					"VBR /n Reserved area: " + VBRSizeRA + " Start sector: 0 Ending sector: " + (VBRSizeRA -1) + " sector Size: " + (VBRSizeRA)+ " sectors \n" +
-					"Sectors per cluster: " + VBRSectorsPerCluster +" sectors \n" +
-					"FAT area: Start sector: " + (VBRSizeRA) + " Ending sector: " + (VBRSizeRA + (VBRNumFATs)*(VBRSizeOfFATs)) +
-					"\n # of FATs: " + (VBRNumFATs) +
-					" \n The size of each FAT: " + (VBRSizeOfFATs) + " sectors \n" +
-					"The first sector of cluster 2: " + (VBRSizeRA + (VBRNumFATs)*(VBRSizeOfFATs)) + (BRMaxRootDirector) + "sectors"
-					*/
+				document.getElementById("RawImageOutput").value = 
+					"VBR \nReserved area: " + parseInt(VBRSizeRA,16) + " Start sector: 0 Ending sector: " + (parseInt(VBRSizeRA,16) -1) + " sector Size: " + parseInt(VBRSizeRA,16)+ " sectors \n" +
+					"Sectors per cluster: " + parseInt(VBRSectorsPerCluster,16) +" sectors \n" +
+					"FAT area: Start sector: " + parseInt(VBRSizeRA,16) + " Ending sector: " + (parseInt(VBRSizeRA,16) + parseInt(VBRNumFATs,16)*parseInt(VBRSizeOfFATs,16)) +
+					"\n# of FATs: " + parseInt(VBRNumFATs,16) +
+					" \nThe size of each FAT: " + parseInt(VBRSizeOfFATs,16) + " sectors \n" +
+					"The first sector of cluster 2: " + (parseInt(VBRSizeRA,16) + (parseInt(VBRNumFATs,16)*parseInt(VBRSizeOfFATs,16)) + parseInt(VBRMaxRootDirector,16)) + " sectors";
 					
+				
 				
 				// filedump as binary
 				//alert(fileString);
