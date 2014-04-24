@@ -696,7 +696,7 @@
 					}
 					else if(j==4)
 					{
-						alert(byteStr);
+						
 						if(byteStr == "01")
 						{
 							MBRPartType = "01 DOS 12-bit FAT";
@@ -817,10 +817,14 @@
                 }
 				
 				alert(MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex);
-				document.getElementById("RawImageOutput").value = MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex;
-				
+				document.getElementById("RawImageOutput").value = document.getElementById("RawImageOutput").value + "\n (" + MBRPartType + "), " + parseInt(MBRBeginPartSector, 16) + ", " + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex;
+				i+=15;
+				hex="";
+				if(i>=509)
+				{i+=2;}
 				}
                 
+				/*
 				function VBR(start)
 				{
 					var VBRSectorsPerCluster, VBRSizeRA, VBRNumFATs, VBRSizeOfFATs, VBRMaxRootDirector;
@@ -880,7 +884,7 @@
 						VBRSizeOfFATs += temp;
 						//->>36-39 32-bit size in sectors of each FAT | The size of each FAT: # sectors
 					}
-				}
+				}*/
 					
 				/*
 				document.getElementById("RawImageOutput").value
