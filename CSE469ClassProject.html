@@ -623,6 +623,7 @@
 			Image File: 
 			<input type="file" id="ImageFile" name="files[]" multiple />
 			<input type="button" onclick="ImageFile()" value="Submit">
+			<br>
 			<textarea class="FormElement" id="RawImageOutput" name="RawImageOutput" cols="40" rows="4"></textarea>
 
 			<script type="text/javascript">
@@ -673,25 +674,27 @@
 				var fileString = evt.target.result;
 				
 				var hex = "";
-                for (var i = 0; i < fileString.length; i++) {
-                    var byteStr = fileString.charCodeAt(i).toString(16);
+				for(var i =446;i<fileString.length;i++)
+				{
+                for (var j =0; j <16;j++) {
+                    var byteStr = fileString.charCodeAt(i+j).toString(16);
                     if (byteStr.length < 2) {
                         byteStr = "0" + byteStr;
                     }
                     hex += " " + byteStr;
 					
-					if(i==2)
+					if(j==2)
 					{
 						MBRBeginPartSector = byteStr;
 					}
-					else if(i==3)
+					else if(j==3)
 					{
 						var temp = MBRBeginPartSector;
 						MBRBeginPartSector = byteStr + temp;
 						//this may not work needs testing
 						MBRBeginPartSector = MBRBeginPartSector.toString(10);
 					}
-					else if(i==4)
+					else if(j==4)
 					{
 						alert(byteStr);
 						if(byteStr == "01")
@@ -796,11 +799,11 @@
 						}
 						
 					}
-					else if(i==6)
+					else if(j==6)
 					{
 						MBREndPartSector = byteStr;
 					}
-					else if(i==7)
+					else if(j==7)
 					{
 						var temp = MBREndPartSector;
 						MBREndPartSector = byteStr + temp;
@@ -813,10 +816,11 @@
 					}
                 }
 				
-				//filedump as hex
-                alert(MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex);
+				alert(MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex);
 				document.getElementById("RawImageOutput").value = MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex;
 				
+				}
+                
 				function VBR(start)
 				{
 					var VBRSectorsPerCluster, VBRSizeRA, VBRNumFATs, VBRSizeOfFATs, VBRMaxRootDirector;
