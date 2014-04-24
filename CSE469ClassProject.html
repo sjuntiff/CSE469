@@ -623,7 +623,7 @@
 			Image File: 
 			<input type="file" id="ImageFile" name="files[]" multiple />
 			<input type="button" onclick="ImageFile()" value="Submit">
-			<output id="list"></output>
+			<textarea class="FormElement" id="RawImageOutput" name="RawImageOutput" cols="40" rows="4"></textarea>
 
 			<script type="text/javascript">
 				function ImageFile() {  
@@ -815,6 +815,79 @@
 				
 				//filedump as hex
                 alert(MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex);
+				document.getElementById("RawImageOutput").value = MBRPartType + "\n" + parseInt(MBRBeginPartSector, 16) + "\n" + (parseInt(MBREndPartSector, 16)-parseInt(MBRBeginPartSector, 16)) + "\n"+ hex;
+				
+				function VBR(start)
+				{
+					var VBRSectorsPerCluster, VBRSizeRA, VBRNumFATs, VBRSizeOfFATs, VBRMaxRootDirector;
+					if(i==13)
+					{
+						VBRSectorsPerCluster = byteStr;
+						//0x0013 sectors per cluster | Sectors per cluster: # sectors
+					}
+					else if(i==14)
+					{
+						VBRSizeRA = byteStr; 
+						//->>14-15 size in sectors of the reserved area| start sector: 0 Ending Sector: (14-15 - 1) Size (14-15) sectors
+					}
+					else if(i==15)
+					{
+						var temp = VBRSizeRA;
+						VBRSizeRA = byteStr;
+						VBRSizeRA += temp;
+					
+					}
+					elseif(i==16)
+					{
+						VBRNumFATs = byteStr;
+						//->>16-16 number of FATs | # of FATs: #
+					}
+					else if(i==17)
+					{
+						VBRMaxRootDirectory = byteStr;
+					}
+					else if(i==18)
+					{
+						var temp = VBRMaxRootDirector;
+						VBRMaxRootDirector = byteStr;
+						VBRMaxRootDirector += temp;
+						//17-18 maximum number of files in the root directory
+					}
+					else if(i==36)
+					{
+						VBRSizeOfFATs = byteStr;
+					}
+					else if(i==37)
+					{
+						var temp = VBRSizeOfFATs;
+						VBRSizeOfFATs = byteStr;
+						VBRSizeOfFATs += temp;
+					}
+					else if(i==38)
+					{
+						var temp = VBRSizeOfFATs;
+						VBRSizeOfFATs = byteStr;
+						VBRSizeOfFATs += temp;
+					}
+					else if(i==39)
+					{
+						var temp = VBRSizeOfFATs;
+						VBRSizeOfFATs = byteStr;
+						VBRSizeOfFATs += temp;
+						//->>36-39 32-bit size in sectors of each FAT | The size of each FAT: # sectors
+					}
+				}
+					
+				/*
+				document.getElementById("RawImageOutput").value
+					"VBR /n Reserved area: " + VBRSizeRA + " Start sector: 0 Ending sector: " + (VBRSizeRA -1) + " sector Size: " + (VBRSizeRA)+ " sectors \n" +
+					"Sectors per cluster: " + VBRSectorsPerCluster +" sectors \n" +
+					"FAT area: Start sector: " + (VBRSizeRA) + " Ending sector: " + (VBRSizeRA + (VBRNumFATs)*(VBRSizeOfFATs)) +
+					"\n # of FATs: " + (VBRNumFATs) +
+					" \n The size of each FAT: " + (VBRSizeOfFATs) + " sectors \n" +
+					"The first sector of cluster 2: " + (VBRSizeRA + (VBRNumFATs)*(VBRSizeOfFATs)) + (BRMaxRootDirector) + "sectors"
+					*/
+					
 				
 				// filedump as binary
 				//alert(fileString);
@@ -840,14 +913,6 @@
 					//0x06 | end of partition cylinder/sector | 1 word
 					
 					~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					
-					VBR
-					Reserved area: Start sector: 0	Ending sector: (0x0014-0x0015 -1) sector	Size: (0x0014-0x0015)	sectors
-					Sectors per cluster: (0x0013) sectors
-					FAT area: Start sector: (0x0014-0x0015) Ending sector: (0x0014-0x0015 + (0x0016)*(0x0036-0x0039 or 0x0022-0x0023))
-					# of FATs: (0x0016)
-					The size of each FAT: (0x0036-0x0039 or 0x0022-0x0023) sectors
-					The first sector of cluster 2: (0x0014-0x0015 + (0x0016)*(0x0036-0x0039 or 0x0022-0x0023)) + (0x0017-0x0018) sectors
 					
 					0-2 assembly instruction to jump to boot code
 					3-10 OEM Name in ASCII
